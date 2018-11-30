@@ -47,6 +47,22 @@ echo '<h3>3. Сотрудники c минимальной и максималь
 while($row = $results->fetch_assoc())
 	echo '<b>Сотрудник: </b>' . $row['name'] . '<b> З/п: </b>' . $row['salary'] . '<br>';
 
+//task 4
+$results = $mysqli->query("
+	SELECT name, salary, department_id
+	FROM employee
+	WHERE salary
+	IN (
+		SELECT max(salary)
+		FROM employee
+		GROUP BY department_id
+		)
+	ORDER BY department_id
+");
+echo '<h3>4. Сотрудники c максимальной з/п в каждом отделе</h3>';
+while($row = $results->fetch_assoc())
+	echo '<b>Сотрудник: </b>' . $row['name'] . '<b> З/п: </b>' . $row['salary'] . '<b> Отдел: </b>' . $row['department_id'] . '<br>';
+
 $results->free();
 $mysqli->close();
 ?>
