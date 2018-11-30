@@ -32,6 +32,21 @@ echo '<h3>2. Сотрудники у которых сегодня день ро
 while($row = $results->fetch_assoc())
 	echo '<b>Сотрудник: </b>' . $row['name'] . '<b> Дата рождения: </b>' . $row['birthday'] . '<br>';
 
+//task 3
+$results = $mysqli->query("
+	SELECT name, salary
+	FROM employee
+	WHERE salary=
+		(SELECT max(salary)
+		FROM employee)
+	OR salary=
+		(SELECT min(salary)
+		FROM employee)
+");
+echo '<h3>3. Сотрудники c минимальной и максимальной з/п</h3>';
+while($row = $results->fetch_assoc())
+	echo '<b>Сотрудник: </b>' . $row['name'] . '<b> З/п: </b>' . $row['salary'] . '<br>';
+
 $results->free();
 $mysqli->close();
 ?>
